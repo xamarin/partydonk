@@ -12,16 +12,27 @@ interface InterfaceWithClassConstraints
     }
 }
 
+class X : InterfaceWithClassConstraints
+{
+    public static void StaticContract()
+    {
+    }
+
+    public void InstanceContract()
+    {
+    }
+}
+
 static class Program
 {
+    static void CallStaticContractMethod<T>(T t) where T : InterfaceWithClassConstraints
+    {
+        T.StaticContract();
+        t.InstanceContract();
+    }
+
     static void Main()
     {
-        foreach (var member in typeof(InterfaceWithClassConstraints).GetMembers())
-        {
-            if (member is MethodBase method)
-                Console.WriteLine($"{method}: {method.Attributes}");
-            else
-                Console.WriteLine(member);
-        }
+        CallStaticContractMethod(new X());
     }
 }
