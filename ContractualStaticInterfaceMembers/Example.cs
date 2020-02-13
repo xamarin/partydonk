@@ -1,18 +1,18 @@
  using System;
  using System.Reflection;
 
-interface InterfaceWithClassConstraints
+interface IPartydonk
 {
-    abstract static void StaticContract();
-
     void InstanceContract();
+
+    abstract static void StaticContract();
 
     static void StaticHelper()
     {
     }
 }
 
-class X : InterfaceWithClassConstraints
+sealed class Partydonk : IPartydonk
 {
     public static void StaticContract()
     {
@@ -25,14 +25,25 @@ class X : InterfaceWithClassConstraints
 
 static class Program
 {
-    static void CallStaticContractMethod<T>(T t) where T : InterfaceWithClassConstraints
+    static void Call<TPartydonk>(TPartydonk partydonk) where TPartydonk : IPartydonk
     {
-        T.StaticContract();
-        t.InstanceContract();
+        TPartydonk.StaticContract(); // OK
+        partydonk.InstanceContract(); // OK
+        IPartydonk.StaticHelper(); // OK
+        
+        // IPartydonk.StaticContract(); // TODO: needs error diagnostic
     }
 
     static void Main()
     {
-        CallStaticContractMethod(new X());
+        Call(new Partydonk());
+
+        foreach (var member in typeof(IPartydonk).GetMembers())
+        {
+            if (member is MethodBase method)
+                Console.WriteLine($"{method}: {method.Attributes}");
+            else
+                Console.WriteLine(member);
+        }
     }
 }
