@@ -1,4 +1,4 @@
-# Contractual Static Interface Members
+# Abstract Static Interface Members
 
 Since C# 8 (and since the beginning of time for CIL), interfaces have been
 allowed to declare static members. However, these members do not 
@@ -63,9 +63,30 @@ semantics. Notably:
   callvirt void IPartydonk::StaticHelper()
   ```
 
+## Special Operator Support
+
+Additionally, to support abstract static operators as interface members,
+the following changes are made to C#:
+
+* Explicit `public` accessibility is not required for an `abstract static`
+  operator declaration on an interface.
+
+* Special cased support for "self" referring generics:
+
+  ```csharp
+  interface IReal<TSelf> where TSelf : IReal<TSelf>
+  {
+      abstract static TSelf operator +(TSelf a, TSelf b);
+  }
+
 ## Run the Sample
 
 ```bash
 $ mono csc/csc.exe Example.cs
 $ ikdasm Example.exe
+```
+
+```bash
+$ mono csc/csc.exe Numerics.cs
+$ ikdasm Numerics.exe
 ```

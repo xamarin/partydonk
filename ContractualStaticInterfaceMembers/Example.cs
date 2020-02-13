@@ -5,7 +5,9 @@ interface IPartydonk
 {
     void InstanceContract();
 
-    abstract static void StaticContract();
+    abstract static void StaticContractMethod();
+    abstract static void StaticContractMethod(bool a);
+    abstract static bool StaticContractProperty { get; }
 
     static void StaticHelper()
     {
@@ -27,7 +29,11 @@ static class Program
 {
     static void Call<TPartydonk>(TPartydonk partydonk) where TPartydonk : IPartydonk
     {
-        TPartydonk.StaticContract(); // OK
+        // TPartydonk.InstanceContract(); // ERROR
+        TPartydonk.StaticContractMethod(); // OK
+        TPartydonk.StaticContractMethod(true); // OK
+        TPartydonk.StaticHelper();
+        var p = TPartydonk.StaticContractProperty;
         partydonk.InstanceContract(); // OK
         IPartydonk.StaticHelper(); // OK
         

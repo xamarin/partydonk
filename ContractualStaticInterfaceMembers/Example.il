@@ -15,7 +15,7 @@
   .ver 0:0:0:0
 }
 .module Example.exe
-// MVID: {B17B3905-244D-49A3-8C38-A1556297448F}
+// MVID: {8F2024A2-6B06-45A9-8741-791A3218C387}
 .imagebase 0x00400000
 .file alignment 0x00000200
 .stackreserve 0x00100000
@@ -33,9 +33,19 @@
   } // end of method IPartydonk::InstanceContract
 
   .method public hidebysig newslot abstract virtual static 
-          void  StaticContract() cil managed
+          void  StaticContractMethod() cil managed
   {
-  } // end of method IPartydonk::StaticContract
+  } // end of method IPartydonk::StaticContractMethod
+
+  .method public hidebysig newslot abstract virtual static 
+          void  StaticContractMethod(bool a) cil managed
+  {
+  } // end of method IPartydonk::StaticContractMethod
+
+  .method public hidebysig newslot specialname abstract virtual static 
+          bool  get_StaticContractProperty() cil managed
+  {
+  } // end of method IPartydonk::get_StaticContractProperty
 
   .method public hidebysig static void  StaticHelper() cil managed
   {
@@ -45,6 +55,10 @@
     IL_0001:  ret
   } // end of method IPartydonk::StaticHelper
 
+  .property bool StaticContractProperty()
+  {
+    .get bool IPartydonk::get_StaticContractProperty()
+  } // end of property IPartydonk::StaticContractProperty
 } // end of class IPartydonk
 
 .class private auto ansi sealed beforefieldinit Partydonk
@@ -86,19 +100,29 @@
 {
   .method private hidebysig static void  Call<(IPartydonk) TPartydonk>(!!TPartydonk partydonk) cil managed
   {
-    // Code size       34 (0x22)
-    .maxstack  8
+    // Code size       65 (0x41)
+    .maxstack  1
+    .locals init (bool V_0)
     IL_0000:  nop
     IL_0001:  constrained. !!TPartydonk
-    IL_0007:  callvirt   void IPartydonk::StaticContract()
+    IL_0007:  callvirt   void IPartydonk::StaticContractMethod()
     IL_000c:  nop
-    IL_000d:  ldarga.s   partydonk
-    IL_000f:  constrained. !!TPartydonk
-    IL_0015:  callvirt   instance void IPartydonk::InstanceContract()
-    IL_001a:  nop
-    IL_001b:  call       void IPartydonk::StaticHelper()
-    IL_0020:  nop
-    IL_0021:  ret
+    IL_000d:  ldc.i4.1
+    IL_000e:  constrained. !!TPartydonk
+    IL_0014:  callvirt   void IPartydonk::StaticContractMethod(bool)
+    IL_0019:  nop
+    IL_001a:  call       void IPartydonk::StaticHelper()
+    IL_001f:  nop
+    IL_0020:  constrained. !!TPartydonk
+    IL_0026:  callvirt   bool IPartydonk::get_StaticContractProperty()
+    IL_002b:  stloc.0
+    IL_002c:  ldarga.s   partydonk
+    IL_002e:  constrained. !!TPartydonk
+    IL_0034:  callvirt   instance void IPartydonk::InstanceContract()
+    IL_0039:  nop
+    IL_003a:  call       void IPartydonk::StaticHelper()
+    IL_003f:  nop
+    IL_0040:  ret
   } // end of method Program::Call
 
   .method private hidebysig static void  Main() cil managed
